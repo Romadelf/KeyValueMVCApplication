@@ -1,6 +1,6 @@
 package be.technifutur.nrb.jasa.rdf.keyvaluemvcapplication.enums;
 
-public enum StateEnum {
+public enum ModelStateEnum {
     
     VIDE, NONVIDE, PLEIN;
     

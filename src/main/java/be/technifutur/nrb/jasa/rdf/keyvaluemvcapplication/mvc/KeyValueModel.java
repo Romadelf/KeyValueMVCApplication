@@ -2,14 +2,47 @@ package be.technifutur.nrb.jasa.rdf.keyvaluemvcapplication.mvc;
 
 import java.util.TreeMap;
 
-import be.technifutur.nrb.jasa.rdf.keyvaluemvcapplication.enums.StateEnum;
+import be.technifutur.nrb.jasa.rdf.keyvaluemvcapplication.enums.ModelStateEnum;
 import be.technifutur.nrb.jasa.rdf.keyvaluemvcapplication.exception.OverloadException;
 
 public class KeyValueModel {
     
-    private TreeMap<String, String> pool = new TreeMap<String, String>();
     private static final int CAPACITY = 10;
+
+    private TreeMap<String, String> pool;
+    private ModelStateEnum modelState;
+    private boolean stopped;
     
+    private void updateState() {
+	ModelStateEnum state;
+	switch(this.pool.size()) {
+	case 0:
+	    state = ModelStateEnum.VIDE;
+	    break;
+	case CAPACITY:
+	    state = ModelStateEnum.PLEIN;
+	    break;
+	default:
+	    state = ModelStateEnum.NONVIDE;
+	    break;
+	}
+	this.modelState = state;
+    }
+
+    public boolean isStopped() {
+        return stopped;
+    }
+    
+    public ModelStateEnum getState() {
+        return this.modelState;
+    }
+    
+    public void start() {
+	this.pool = new TreeMap<String, String>();
+	this.stopped = false;
+	this.updateState();
+    }
+
     public String add(String key, String value) {
 	String oldValueIfAnyNullOtherwise;
 	if (this.pool.size() < CAPACITY) {
@@ -20,28 +53,14 @@ public class KeyValueModel {
 		throw new OverloadException();
 	    }
 	}
+	this.updateState();
 	return oldValueIfAnyNullOtherwise;
     }
 
     public String remove(String key) {
 	String oldValueIfAnyNullOtherwise = this.pool.remove(key);
+	this.updateState();
 	return oldValueIfAnyNullOtherwise;
-    }
-    
-    public StateEnum getState() {
-	StateEnum state;
-	switch(this.pool.size()) {
-	case 0:
-	    state = StateEnum.VIDE;
-	    break;
-	case CAPACITY:
-	    state = StateEnum.PLEIN;
-	    break;
-	default:
-	    state = StateEnum.NONVIDE;
-	    break;
-	}
-	return state;
     }
 
 }

@@ -1,0 +1,7 @@
+- Faire un clean de l'écran à chaque input - Importance: 2/1 = 2pts
+  > Business Value estimée: 2
+  > Point de complexité en dévelopement estimé: 1
+
+- Mettre un cadre autour de chaque affichage - Importance: 1/3 =~ 0.3 pt
+  > Business Value estimée: 1
+  > Point de complexité en dévelopement estimé: 3

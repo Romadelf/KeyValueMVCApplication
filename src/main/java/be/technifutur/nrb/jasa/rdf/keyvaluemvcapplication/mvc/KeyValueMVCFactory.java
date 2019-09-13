@@ -14,9 +14,11 @@ public class KeyValueMVCFactory implements MVCFactory<KeyValueModel> {
 	super();
 	KeyValueModel model = new KeyValueModel();
 	KeyValueControler controler = new KeyValueControler();
-	controler.setModel(model);
 	KeyValueVue vue = new KeyValueVue();
+	// Les deux lignes suivantes sont redondantes car un MVCApplication les exécute également lors d'un start. 
+	controler.setModel(model);
 	vue.setModel(model);
+	//
 	this.model = model;
 	this.controler = controler;
 	this.vue = vue;

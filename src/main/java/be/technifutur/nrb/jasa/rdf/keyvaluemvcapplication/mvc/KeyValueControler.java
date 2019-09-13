@@ -4,14 +4,18 @@ import be.technifutur.applicationrunner.mvc.Controler;
 
 public class KeyValueControler implements Controler<KeyValueModel> {
 
+    private KeyValueModel model;
+
+    public void setModel(KeyValueModel model) {
+	this.model = model;
+    }
+
     public void start() {
-	// TODO Auto-generated method stub
-	
+	this.model.start();
     }
 
     public boolean isfinish() {
-	// TODO Auto-generated method stub
-	return false;
+	return this.model.isStopped();
     }
 
     public void newInput(String input) {
@@ -25,11 +29,6 @@ public class KeyValueControler implements Controler<KeyValueModel> {
     }
 
     public void stop() {
-	// TODO Auto-generated method stub
-	
-    }
-
-    public void setModel(KeyValueModel model) {
 	// TODO Auto-generated method stub
 	
     }
