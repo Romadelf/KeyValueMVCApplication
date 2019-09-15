@@ -2,18 +2,23 @@ package be.technifutur.nrb.jasa.rdf.keyvaluemvcapplication.mvc;
 
 import java.util.TreeMap;
 
-import be.technifutur.nrb.jasa.rdf.keyvaluemvcapplication.enums.ModelStateEnum;
 import be.technifutur.nrb.jasa.rdf.keyvaluemvcapplication.exception.OverloadException;
+import be.technifutur.nrb.jasa.rdf.keyvaluemvcapplication.mvc.bean.KeyValueRequest;
+import be.technifutur.nrb.jasa.rdf.keyvaluemvcapplication.mvc.enum_.ModelStateEnum;
 
 public class KeyValueModel {
     
     private static final int CAPACITY = 10;
 
     private TreeMap<String, String> pool;
-    private ModelStateEnum modelState;
+    private KeyValueRequest keyValueRequest;
     private boolean stopped;
+
+    public KeyValueRequest getKeyValueRequest() {
+        return this.keyValueRequest;
+    }
     
-    private void updateState() {
+    public ModelStateEnum getState() {
 	ModelStateEnum state;
 	switch(this.pool.size()) {
 	case 0:
@@ -26,21 +31,18 @@ public class KeyValueModel {
 	    state = ModelStateEnum.NONVIDE;
 	    break;
 	}
-	this.modelState = state;
+	return state;
     }
 
     public boolean isStopped() {
-        return stopped;
-    }
-    
-    public ModelStateEnum getState() {
-        return this.modelState;
+        return this.stopped;
     }
     
     public void start() {
 	this.pool = new TreeMap<String, String>();
+	this.keyValueRequest = new KeyValueRequest();
+	this.keyValueRequest.setIsDeletion(false);
 	this.stopped = false;
-	this.updateState();
     }
 
     public String add(String key, String value) {
@@ -53,13 +55,11 @@ public class KeyValueModel {
 		throw new OverloadException();
 	    }
 	}
-	this.updateState();
 	return oldValueIfAnyNullOtherwise;
     }
 
     public String remove(String key) {
 	String oldValueIfAnyNullOtherwise = this.pool.remove(key);
-	this.updateState();
 	return oldValueIfAnyNullOtherwise;
     }
 
